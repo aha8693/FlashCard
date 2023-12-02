@@ -9,15 +9,15 @@ import {
   Delete,
   Query,
   UseInterceptors,
-} from '@nestjs/common';
-import { DecksService } from './decks.service';
-import { CreateDeckDto } from './deck-create.dto';
-import { DeckResponseDto } from './deck-response.dto';
-import { UpdateDeckDto } from './deck-update-dto';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { UserId } from 'src/decorators/user-id.decorator';
-import { DeckOwnershipGuard } from 'src/guards/deck-owner.guard';
+} from "@nestjs/common";
+import { DecksService } from "./decks.service";
+import { CreateDeckDto } from "./deck-create.dto";
+import { DeckResponseDto } from "./deck-response.dto";
+import { UpdateDeckDto } from "./deck-update-dto";
+import { UseGuards } from "@nestjs/common";
+import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
+import { UserId } from "src/decorators/user-id.decorator";
+import { DeckOwnershipGuard } from "src/guards/deck-owner.guard";
 
 type DeckResponseWithPagination = {
   search?: string;
@@ -30,7 +30,7 @@ type DeckResponseWithPagination = {
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors()
-@Controller('decks')
+@Controller("decks")
 export class DecksController {
   constructor(private readonly decksService: DecksService) {}
 
@@ -47,15 +47,17 @@ export class DecksController {
   @Get()
   async findAll(
     @UserId() userId: number,
-    @Query('limit') limit: number = 10,
-    @Query('offset') offset: number = 0,
-    @Query('search') search: string,
+    @Query("limit") limit: number = 10,
+    @Query("offset") offset: number = 0,
+    @Query("search") search: string,
+    @Query("withUserData") withUserData?: boolean,
   ): Promise<DeckResponseWithPagination> {
     const decks = await this.decksService.findAll(
       userId,
       limit,
       offset,
       search,
+      withUserData,
     );
     return {
       search,
@@ -65,14 +67,17 @@ export class DecksController {
       },
       data: decks.map((deck) => {
         delete deck.userId;
+          if (deck.user) { // Delete user's password if this deck is associated with user (In an ideal scenario, each deck is associated with one user)
+            delete deck.user.password;
+          }
         return deck;
       }),
     };
   }
 
   @UseGuards(DeckOwnershipGuard)
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<DeckResponseDto> {
+  @Get(":id")
+  async findOne(@Param("id") id: string): Promise<DeckResponseDto> {
     const deck = await this.decksService.findOne(id);
     if (!deck) {
       throw new NotFoundException(`Post with ID ${id} not found`);
@@ -82,9 +87,9 @@ export class DecksController {
   }
 
   @UseGuards(DeckOwnershipGuard)
-  @Patch(':id')
+  @Patch(":id")
   async update(
-    @Param('id') id: string,
+    @Param("id") id: string,
     @Body() updatePostDto: UpdateDeckDto,
   ): Promise<DeckResponseDto> {
     const deck = await this.decksService.update(id, updatePostDto);
@@ -93,8 +98,8 @@ export class DecksController {
   }
 
   @UseGuards(DeckOwnershipGuard)
-  @Delete(':id')
-  async remove(@Param('id') id: string): Promise<DeckResponseDto> {
+  @Delete(":id")
+  async remove(@Param("id") id: string): Promise<DeckResponseDto> {
     const deck = await this.decksService.remove(id);
     if (!deck) {
       throw new NotFoundException(`Deck with ID ${id} not found`);

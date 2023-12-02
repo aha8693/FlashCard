@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './user.entity';
-import { CreateUserDTO } from './create-user.dto';
-import * as bcrypt from 'bcrypt';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { User } from "./user.entity";
+import { CreateUserDTO } from "./create-user.dto";
+import * as bcrypt from "bcrypt";
 
 // This class is for handling operations related to user (creating new user, finding a user by their name)
 @Injectable()
@@ -18,9 +18,11 @@ export class UserService {
   }
 
   async createUser(userDto: CreateUserDTO): Promise<User> {
-    const user = new User();
-    user.username = userDto.username;
-    user.password = await bcrypt.hash(userDto.password, 10);
+    const { password, ...userInfo } = userDto;
+    const user = await this.userRepository.create({
+      ...userInfo,
+      password: await bcrypt.hash(password, 10),
+    });
     return this.userRepository.save(user);
   }
 

@@ -25,7 +25,7 @@
 .env.prod
 .env.test
 
-# logs
+# Logs
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
@@ -46,7 +46,8 @@ lerna-debug.log*
 **/.settings/
 **/*.sublime-workspace
 .vscode/*
-.vscode/settings.json
+!.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+

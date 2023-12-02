@@ -4,11 +4,11 @@ import {
   ExecutionContext,
   BadRequestException,
   NotFoundException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+} from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
 
-import { RequestWithUser } from 'src/decorators/user-id.decorator';
-import { DecksService } from 'src/decks/decks.service';
+import { RequestWithUser } from "src/decorators/user-id.decorator";
+import { DecksService } from "src/decks/decks.service";
 
 @Injectable()
 export class DeckOwnershipGuard implements CanActivate {
@@ -30,7 +30,7 @@ export class DeckOwnershipGuard implements CanActivate {
 
     // If deckId is not provided
     if (!deckId) {
-      throw new BadRequestException('Invalid or missing deck ID');
+      throw new BadRequestException("Invalid or missing deck ID");
     }
 
     const deck = await this.deckService.findOne(deckId);

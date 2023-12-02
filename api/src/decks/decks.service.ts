@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Deck } from './deck.entity';
-import { CreateDeckDto } from './deck-create.dto';
-import { UpdateDeckDto } from './deck-update-dto';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Deck } from "./deck.entity";
+import { CreateDeckDto } from "./deck-create.dto";
+import { UpdateDeckDto } from "./deck-update-dto";
 
 @Injectable()
 export class DecksService {
@@ -29,13 +29,17 @@ export class DecksService {
     limit: number,
     offset: number,
     search?: string,
+    withUserData?: boolean,
   ): Promise<Deck[]> {
     const queryBuilder = this.deckRepository
-      .createQueryBuilder('deck')
-      .where('deck.userId = :userId', { userId });
+      .createQueryBuilder("deck")
+      .where("deck.userId = :userId", { userId });
 
+    if (withUserData) {
+      queryBuilder.leftJoinAndSelect("deck.user", "user")
+    }
     if (search !== undefined) {
-      queryBuilder.andWhere('deck.title ILIKE :search', {
+      queryBuilder.andWhere("deck.title ILIKE :search", {
         search: `%${search}%`,
       });
     }
@@ -43,7 +47,7 @@ export class DecksService {
     queryBuilder.limit(limit);
     queryBuilder.offset(offset);
 
-    queryBuilder.orderBy('deck.createdAt', 'DESC');
+    queryBuilder.orderBy("deck.createdAt", "DESC");
 
     return queryBuilder.getMany();
   }

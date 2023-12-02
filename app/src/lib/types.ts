@@ -4,3 +4,12 @@ export type Deck = {
   image?: string;
   numberOfCards: number;
 };
+
+export type User = {
+  id: number;
+  username: string;
+  displayName: string;
+  avatar?: string;
+};
+
+

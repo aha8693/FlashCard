@@ -31,7 +31,7 @@ export const EditDeckDialog = ({
         description: "Please enter a title for your deck",
       });
 
-      return; // Prevent saving when the title is empty  
+      return; // Prevent saving when the title is empty
     }
     await editDeckById(id, title);
     setContent(title);

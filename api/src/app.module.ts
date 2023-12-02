@@ -1,18 +1,18 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { validate } from './env.validation';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthService } from './auth/auth.service';
-import { LocalStrategy } from './auth/local.strategy';
-import { PassportModule } from '@nestjs/passport';
-import { User } from './user/user.entity';
-import { UserService } from './user/user.service';
-import { UserController } from './user/user.controller';
-import { JwtModule } from '@nestjs/jwt';
-import { DecksModule } from './decks/decks.module';
-import { JwtStrategy } from './auth/jwt.strategy';
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { validate } from "./env.validation";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthService } from "./auth/auth.service";
+import { LocalStrategy } from "./auth/local.strategy";
+import { PassportModule } from "@nestjs/passport";
+import { User } from "./user/user.entity";
+import { UserService } from "./user/user.service";
+import { UserController } from "./user/user.controller";
+import { JwtModule } from "@nestjs/jwt";
+import { DecksModule } from "./decks/decks.module";
+import { JwtStrategy } from "./auth/jwt.strategy";
 
 @Module({
   imports: [
@@ -23,23 +23,23 @@ import { JwtStrategy } from './auth/jwt.strategy';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, PassportModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres', // type of database
-        host: configService.get<string>('DB_HOST'), // how to connect to the database
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'], // tables in my application
-        synchronize: configService.get<string>('NODE_ENV') !== 'production', // TypeORM will automatically create the database schema on every application launch (useful during dev, not recom. during prod.)
+        type: "postgres", // type of database
+        host: configService.get<string>("DB_HOST"), // how to connect to the database
+        port: configService.get<number>("DB_PORT"),
+        username: configService.get<string>("DB_USER"),
+        password: configService.get<string>("DB_PASSWORD"),
+        database: configService.get<string>("DB_NAME"),
+        entities: [__dirname + "/**/*.entity{.ts,.js}"], // tables in my application
+        synchronize: configService.get<string>("NODE_ENV") !== "production", // TypeORM will automatically create the database schema on every application launch (useful during dev, not recom. during prod.)
       }),
       inject: [ConfigService],
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+        secret: configService.get<string>("JWT_SECRET"),
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRATION'),
+          expiresIn: configService.get<string>("JWT_EXPIRATION"),
         },
       }),
       inject: [ConfigService],

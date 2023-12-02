@@ -1,17 +1,17 @@
-import { plainToInstance } from 'class-transformer';
+import { plainToInstance } from "class-transformer";
 import {
   IsNumber,
   IsString,
   IsEnum,
   validateSync,
   MinLength,
-} from 'class-validator';
+} from "class-validator";
 
 enum Environment {
-  Development = 'development',
-  Production = 'production',
-  Test = 'test',
-  Provision = 'provision',
+  Development = "development",
+  Production = "production",
+  Test = "test",
+  Provision = "provision",
 }
 
 class EnvironmentVariables {
@@ -34,7 +34,7 @@ class EnvironmentVariables {
   NODE_ENV: Environment;
 
   @IsString()
-  @MinLength(8, { message: 'JWT secret is too short' })
+  @MinLength(8, { message: "JWT secret is too short" })
   JWT_SECRET: string;
 
   @IsString()

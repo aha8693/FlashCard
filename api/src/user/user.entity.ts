@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Deck } from 'src/decks/deck.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Deck } from "src/decks/deck.entity";
 
 @Entity()
 export class User {
@@ -11,6 +11,12 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column()
+  displayName: string;
+
+  @Column({ nullable: true })
+  avatar: string;
 
   @OneToMany(() => Deck, (deck) => deck.user)
   decks: Deck[];

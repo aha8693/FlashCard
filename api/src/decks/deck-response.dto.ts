@@ -1,3 +1,5 @@
+import { UserResponseDTO } from "src/user/user-response.dto";
+
 export class DeckResponseDto {
   id: string;
   title: string;
@@ -5,4 +7,5 @@ export class DeckResponseDto {
   createdAt: Date;
   updatedAt: Date;
   numberOfCards: number;
+  user?: UserResponseDTO;
 }
