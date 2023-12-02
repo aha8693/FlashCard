@@ -18,15 +18,8 @@ import { UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import { UserId } from "src/decorators/user-id.decorator";
 import { DeckOwnershipGuard } from "src/guards/deck-owner.guard";
-
-type DeckResponseWithPagination = {
-  search?: string;
-  data: DeckResponseDto[];
-  pagination: {
-    limit: number;
-    offset: number;
-  };
-};
+import { FindDecksQueryDTO } from "./find-decks-query.dto";
+import { FindDecksResponseDTO } from "./find-decks-response.dto";
 
 @UseGuards(JwtAuthGuard)
 @UseInterceptors()
@@ -47,11 +40,10 @@ export class DecksController {
   @Get()
   async findAll(
     @UserId() userId: number,
-    @Query("limit") limit: number = 10,
-    @Query("offset") offset: number = 0,
-    @Query("search") search: string,
-    @Query("withUserData") withUserData?: boolean,
-  ): Promise<DeckResponseWithPagination> {
+    @Query() query: FindDecksQueryDTO,
+  ): Promise<FindDecksResponseDTO> {
+    const { limit, offset, search, username, withUserData } = query;
+    
     const decks = await this.decksService.findAll(
       userId,
       limit,
@@ -60,11 +52,11 @@ export class DecksController {
       withUserData,
     );
     return {
+      limit,
+      offset,
       search,
-      pagination: {
-        limit,
-        offset,
-      },
+      username,
+      withUserData,
       data: decks.map((deck) => {
         delete deck.userId;
           if (deck.user) { // Delete user's password if this deck is associated with user (In an ideal scenario, each deck is associated with one user)
