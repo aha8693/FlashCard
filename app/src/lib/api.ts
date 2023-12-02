@@ -1,6 +1,6 @@
+import { getAuthenticatedUser, getAuthenticatedUserToken } from "./auth";
 import { decks } from "./data";
 import { Deck } from "./types";
-import { nanoid } from "nanoid";
 
 // Mock database
 const db = {
@@ -9,12 +9,29 @@ const db = {
 
 // Fetch all posts
 export const fetchDecks = async (): Promise<Deck[]> => {
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      const deck = await Promise.all(db.decks);
-      resolve(deck);
-    }, 200); // Simulate an API delay
+  const token = getAuthenticatedUserToken();
+
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${API_URL}/decks?withUserData=true`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
+  
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${
+        responseJson.message || response.statusText
+      }`,
+    );
+  }
+
+  return responseJson.data;
 };
 
 // delete a deck
@@ -51,15 +68,31 @@ export const createDeck = async (
   title: string,
   image?: string,
 ): Promise<Deck> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const newDeck: Deck = {
-        id: nanoid(),
-        title,
-        image,
-        numberOfCards: 0,
-      };
-      resolve(newDeck);
-    }, 200); // Simulate an API delay
+  const user = getAuthenticatedUser();
+  const token = getAuthenticatedUserToken();
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const response = await fetch(`${API_URL}/decks`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ title, image }),
   });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      `Error: ${response.status} - ${
+        responseJson.message || response.statusText
+      }`,
+    );
+  }
+
+  return {
+    ...responseJson.data,
+    user: user,
+  };
 };

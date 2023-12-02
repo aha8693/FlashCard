@@ -11,11 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationDecks from "@/hooks/use-mutation-decks";
 import { toast } from "./ui/use-toast";
+import { Textarea } from "./ui/textarea";
 
 export const AddDeckDialog = () => {
   const [newTitle, setContent] = useState("");
@@ -55,17 +54,14 @@ export const AddDeckDialog = () => {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid items-center grid-cols-4 gap-4">
-            <Label htmlFor="title" className="text-right">
-              Title
-            </Label>
-            <Input
-              id="title"
-              value={newTitle}
-              className="col-span-3"
-              onChange={(e) => {
-                setContent(e.target.value);
-              }}
-            />
+          <Textarea
+            id="Title"
+            value={newTitle}
+            className="col-span-3"
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+          />
           </div>
         </div>
         <DialogFooter>
