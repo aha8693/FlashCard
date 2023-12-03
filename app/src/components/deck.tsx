@@ -1,21 +1,8 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import type { Deck } from "@/lib/types";
-import { Button } from "./ui/button";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import useMutationDecks from "@/hooks/use-mutation-decks";
-import { EditDeckDialog } from "./edit-deck-dialog";
-import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import { Toaster } from "./ui/toaster";
 import DeckActions from "./deck-actions";
 
 const Deck = ({ deck }: { deck: Deck }) => {
-  const { id, title, numberOfCards } = deck;
-  const { removeDeckById } = useMutationDecks();
+  const { title, numberOfCards } = deck;
 
   return (
     <div className="flex justify-center p-4">
