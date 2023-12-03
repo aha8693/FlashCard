@@ -24,8 +24,8 @@ export class AuthService {
   }
 
   async login(user: UserResponseDTO) {
-    const payload = { 
-      username: user.username, 
+    const payload = {
+      username: user.username,
       sub: user.id,
       displayName: user.displayName,
       avatar: user.avatar,

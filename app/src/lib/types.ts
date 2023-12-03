@@ -3,6 +3,8 @@ export type Deck = {
   title: string;
   image?: string;
   numberOfCards: number;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type User = {
@@ -11,5 +13,3 @@ export type User = {
   displayName: string;
   avatar?: string;
 };
-
-

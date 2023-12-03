@@ -1,10 +1,11 @@
-import { Deck } from "./types";
+import { Deck, User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 // Represents our app's global state
 type State = {
   decks: Deck[];
+  user: User | null;
   // Add more state variables like likes and comments
 };
 
@@ -14,10 +15,13 @@ type Action = {
   removeDeck: (id: string) => void;
   editDeck: (id: string, newTitle: string) => void;
   addDeck: (deck: Deck) => void;
+  setUser: (user: User) => void;
+  clearUser: () => void;
 };
 
 const initialState: State = {
   decks: [],
+  user: null,
 };
 
 // `immer` allow us to modify the state using mutable syntax while still returning an immutable copy of the state.
@@ -45,8 +49,11 @@ export const useStore = create<State & Action>()(
     },
 
     addDeck: (deck) => {
-      const newDecks = [...get().decks, deck];
+      const newDecks = [deck, ...get().decks];
       set({ decks: newDecks });
     },
+    setUser: (user) => set({ user }),
+
+    clearUser: () => set({ user: null }),
   })),
 );

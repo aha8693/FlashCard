@@ -11,6 +11,7 @@ import useMutationDecks from "@/hooks/use-mutation-decks";
 import { EditDeckDialog } from "./edit-deck-dialog";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { Toaster } from "./ui/toaster";
+import DeckActions from "./deck-actions";
 
 const Deck = ({ deck }: { deck: Deck }) => {
   const { id, title, numberOfCards } = deck;
@@ -27,28 +28,7 @@ const Deck = ({ deck }: { deck: Deck }) => {
             <div className="text-base">{numberOfCards} cards</div>
           </div>
           <div className="absolute top-0 right-0 m-8">
-            <Dialog>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <DotsVerticalIcon className="flex" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DialogTrigger>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                  </DialogTrigger>
-                  <DropdownMenuItem
-                    className="text-red-500"
-                    onClick={() => removeDeckById(id)}
-                  >
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <EditDeckDialog id={id} currentTitle={title} />
-              <Toaster />
-            </Dialog>
+            <DeckActions deck={deck} />
           </div>
         </div>
         <div></div>

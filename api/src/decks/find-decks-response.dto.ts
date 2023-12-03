@@ -1,6 +1,5 @@
 import { DeckResponseDto } from "./deck-response.dto";
 
-
 export class FindDecksResponseDTO {
   limit: number;
   offset: number;

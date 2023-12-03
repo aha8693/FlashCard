@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,12 +12,15 @@ import {
 } from "@/components/ui/dialog";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationDecks from "@/hooks/use-mutation-decks";
-import { toast } from "./ui/use-toast";
+import { useToast } from "./ui/use-toast";
 import { Textarea } from "./ui/textarea";
+import { useStore } from "@/lib/store";
 
 export const AddDeckDialog = () => {
   const [newTitle, setContent] = useState("");
   const { addNewDeck } = useMutationDecks();
+  const { toast } = useToast();
+  const user = useStore((state) => state.user);
 
   const handleSave = async () => {
     if (newTitle.trim() === "") {
@@ -49,32 +51,45 @@ export const AddDeckDialog = () => {
         <DialogHeader>
           <DialogTitle>Add Deck</DialogTitle>
           <DialogDescription>
-            Provide the title of your deck here.
+            {user
+              ? "Provide the content of your post here."
+              : "Please login to make a post."}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid items-center grid-cols-4 gap-4">
-          <Textarea
-            id="Title"
-            value={newTitle}
-            className="col-span-3"
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-          />
+        {user && (
+          <div className="grid gap-4 py-4">
+            <div className="grid items-center grid-cols-4 gap-4">
+              <Textarea
+                id="Title"
+                value={newTitle}
+                className="col-span-3"
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant={"secondary"} type="reset" onClick={handleCancel}>
-              Cancel
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button type="submit" onClick={handleSave}>
-              Save
-            </Button>
-          </DialogClose>
+          {!user && (
+            <DialogClose asChild>
+              <Button>Okay</Button>
+            </DialogClose>
+          )}
+          {user && (
+            <DialogClose asChild>
+              <Button variant={"secondary"} type="reset" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </DialogClose>
+          )}
+          {user && (
+            <DialogClose asChild>
+              <Button type="submit" onClick={handleSave}>
+                Save
+              </Button>
+            </DialogClose>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

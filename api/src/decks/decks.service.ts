@@ -36,7 +36,7 @@ export class DecksService {
       .where("deck.userId = :userId", { userId });
 
     if (withUserData) {
-      queryBuilder.leftJoinAndSelect("deck.user", "user")
+      queryBuilder.leftJoinAndSelect("deck.user", "user");
     }
     if (search !== undefined) {
       queryBuilder.andWhere("deck.title ILIKE :search", {

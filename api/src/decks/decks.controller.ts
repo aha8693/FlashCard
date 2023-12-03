@@ -43,7 +43,7 @@ export class DecksController {
     @Query() query: FindDecksQueryDTO,
   ): Promise<FindDecksResponseDTO> {
     const { limit, offset, search, username, withUserData } = query;
-    
+
     const decks = await this.decksService.findAll(
       userId,
       limit,
@@ -59,9 +59,10 @@ export class DecksController {
       withUserData,
       data: decks.map((deck) => {
         delete deck.userId;
-          if (deck.user) { // Delete user's password if this deck is associated with user (In an ideal scenario, each deck is associated with one user)
-            delete deck.user.password;
-          }
+        if (deck.user) {
+          // Delete user's password if this deck is associated with user (In an ideal scenario, each deck is associated with one user)
+          delete deck.user.password;
+        }
         return deck;
       }),
     };

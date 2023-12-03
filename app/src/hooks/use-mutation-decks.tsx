@@ -9,13 +9,33 @@ function useMutationDecks() {
   const addDeck = useStore((state) => state.addDeck);
 
   const removeDeckById = async (id: string) => {
-    await deleteDeck(id); // api
-    removeDeck(id); // decks: front-end
+    try {
+      await deleteDeck(id); // api
+      removeDeck(id); // decks: front-end
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to delete the deck",
+        description:
+          (error as Error).message ||
+          "There was an error deleting the deck. Please try again later.",
+      });
+    }
   };
 
   const editDeckById = async (id: string, newTitle: string) => {
-    await modifyDeck(id, newTitle);
-    editDeck(id, newTitle);
+    try {
+      await modifyDeck(id, newTitle);
+      editDeck(id, newTitle);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to edit the deck",
+        description:
+          (error as Error).message ||
+          "There was an error editing the deck. Please try again later.",
+      });
+    }
   };
 
   const addNewDeck = async (title: string, image?: string) => {
@@ -30,7 +50,7 @@ function useMutationDecks() {
           (error as Error).message ||
           "There was an error creating the deck. Please try again later.",
       });
-    } 
+    }
   };
   return {
     removeDeckById,
