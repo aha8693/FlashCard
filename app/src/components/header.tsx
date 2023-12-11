@@ -1,11 +1,17 @@
+import { useStore } from "@/lib/store";
 import { Button } from "./ui/button";
 
 const Header = () => {
+  const selectedDeckId = useStore((state) => state.selectedDeckId);
   return (
     <div className="flex justify-center gap-3 p-4 border-b-2 border-slate-400">
-      <Button variant={"link"}>Decks</Button>
-      <Button variant={"link"} disabled={true}>
-        Cards
+      <Button variant={"link"} disabled={selectedDeckId !== null}>
+        {" "}
+        Decks
+      </Button>
+      <Button variant={"link"} disabled={selectedDeckId === null}>
+        {" "}
+        Cards{" "}
       </Button>
     </div>
   );

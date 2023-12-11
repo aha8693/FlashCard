@@ -3,6 +3,7 @@ import useQueryDeck from "@/hooks/use-query-decks";
 
 const Decks = () => {
   const { decks } = useQueryDeck();
+
   return (
     <div>
       {decks.map((deck) => (

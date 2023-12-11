@@ -69,20 +69,20 @@ export class DecksController {
   }
 
   @UseGuards(DeckOwnershipGuard)
-  @Get(":id")
-  async findOne(@Param("id") id: string): Promise<DeckResponseDto> {
+  @Get(":deckId")
+  async findOne(@Param("deckId") id: string): Promise<DeckResponseDto> {
     const deck = await this.decksService.findOne(id);
     if (!deck) {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+      throw new NotFoundException(`Deck with ID ${id} not found`);
     }
     delete deck.userId;
     return deck;
   }
 
   @UseGuards(DeckOwnershipGuard)
-  @Patch(":id")
+  @Patch(":deckId")
   async update(
-    @Param("id") id: string,
+    @Param("deckId") id: string,
     @Body() updatePostDto: UpdateDeckDto,
   ): Promise<DeckResponseDto> {
     const deck = await this.decksService.update(id, updatePostDto);
@@ -91,8 +91,8 @@ export class DecksController {
   }
 
   @UseGuards(DeckOwnershipGuard)
-  @Delete(":id")
-  async remove(@Param("id") id: string): Promise<DeckResponseDto> {
+  @Delete(":deckId")
+  async remove(@Param("deckId") id: string): Promise<DeckResponseDto> {
     const deck = await this.decksService.remove(id);
     if (!deck) {
       throw new NotFoundException(`Deck with ID ${id} not found`);

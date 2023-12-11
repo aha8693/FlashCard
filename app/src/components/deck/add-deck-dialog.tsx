@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 import useMutationDecks from "@/hooks/use-mutation-decks";
-import { useToast } from "./ui/use-toast";
-import { Textarea } from "./ui/textarea";
+import { useToast } from "../ui/use-toast";
+import { Textarea } from "../ui/textarea";
 import { useStore } from "@/lib/store";
 
 export const AddDeckDialog = () => {
@@ -52,8 +52,8 @@ export const AddDeckDialog = () => {
           <DialogTitle>Add Deck</DialogTitle>
           <DialogDescription>
             {user
-              ? "Provide the content of your post here."
-              : "Please login to make a post."}
+              ? "Provide the content of your card here."
+              : "Please login to make a card."}
           </DialogDescription>
         </DialogHeader>
         {user && (

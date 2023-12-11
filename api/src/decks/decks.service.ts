@@ -57,7 +57,8 @@ export class DecksService {
     if (!deck) {
       return null;
     }
-    return this.deckRepository.save(deck);
+    this.deckRepository.save(deck);
+    return deck;
   }
 
   async remove(id: string): Promise<Deck | null> {
@@ -66,6 +67,28 @@ export class DecksService {
       return null;
     }
     this.deckRepository.remove(deck);
+    return deck;
+  }
+
+  async incrementCardCounter(id: string): Promise<Deck | null> {
+    const deck = await this.findOne(id);
+    if (!deck) {
+      return null;
+    }
+
+    deck.numberOfCards += 1;
+    await this.deckRepository.save(deck);
+    return deck;
+  }
+
+  async decrementCardCounter(id: string): Promise<Deck | null> {
+    const deck = await this.findOne(id);
+    if (!deck) {
+      return null;
+    }
+
+    deck.numberOfCards -= 1;
+    await this.deckRepository.save(deck);
     return deck;
   }
 

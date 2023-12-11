@@ -10,7 +10,7 @@ services:
   db:
     image: postgres:15-alpine
     restart: always
-    container_name: postgres-for-flashcards-api-han10
+    container_name: postgres-for-flashcards-api
     ports:
       - '${DB_PORT}:5432' # HOST_PORT:CONTAINER_PORT
     environment:

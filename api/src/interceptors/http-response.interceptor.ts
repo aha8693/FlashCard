@@ -12,6 +12,12 @@ export class HttpResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((response) => {
+        if (response == undefined) {
+          return {
+            statusCode: context.switchToHttp().getResponse().statusCode,
+            message: "Success",
+          };
+        }
         if ("data" in response) {
           return {
             statusCode: context.switchToHttp().getResponse().statusCode,

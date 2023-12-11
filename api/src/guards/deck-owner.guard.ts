@@ -26,7 +26,7 @@ export class DeckOwnershipGuard implements CanActivate {
     // The JWT strategy will throw an error if it fails to validate the token
 
     // Get the deck id from the request params
-    const deckId = request.params.id;
+    const deckId = request.params.deckId;
 
     // If deckId is not provided
     if (!deckId) {
